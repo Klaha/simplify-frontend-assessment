@@ -3,11 +3,14 @@ import ProductInfo from "@/app/components/productInfo";
 import { getItemDetail } from "@/app/lib/get-item-detail";
 import { Params } from "@/app/types";
 import Image from "next/image";
+import { redirect } from 'next/navigation';
 
 export default async function ItemPage(props: Params) {
   const {id} = props.params;
-  const { image, name, brand, model, color, category, description, price } =
-    await getItemDetail(id);
+  const itemDetail = await getItemDetail(id);
+  !itemDetail && redirect('/dashboard/card');
+
+  const { image, name, brand, model, color, category, description, price } = itemDetail;
 
   return (
     <main className="px-8 py-5 text-black">
